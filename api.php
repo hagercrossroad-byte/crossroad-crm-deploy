@@ -546,8 +546,12 @@ if($action==='att.edit'){
   } else {
     // إضافة سجل يدوي (غياب/إجازة/من المنزل)
     db()->prepare("INSERT INTO attendance(user_id,day,in_time,out_time,status,edited_by,edit_reason) VALUES(?,?,?,?,?,?,?)
-      ON DUPLICATE KEY UPDATE status=VALUES(status), edited_by=VALUES(edited_by), edit_reason=VALUES(edit_reason)")
-      ->execute([(int)$i['user_id'],$i['day']?:date('Y-m-d'),$i['in_time']?:null,$i['out_time']?:null,$i['status']?:'absent',$ME['id'],$reason]);
+ON DUPLICATE KEY UPDATE
+in_time = VALUES(in_time),
+out_time = VALUES(out_time),
+status = VALUES(status),
+edited_by = VALUES(edited_by),
+edit_reason = VALUES(edit_reason)      ->execute([(int)$i['user_id'],$i['day']?:date('Y-m-d'),$i['in_time']?:null,$i['out_time']?:null,$i['status']?:'absent',$ME['id'],$reason]);
     log_it('إضافة سجل حضور يدوي','user#'.$i['user_id'].' — '.($i['day']??''));
   }
   out();
