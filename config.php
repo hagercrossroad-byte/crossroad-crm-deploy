@@ -5,8 +5,8 @@
    (Databases → MySQL Databases)
    ══════════════════════════════════════════════ */
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'u000000000_crm');   // اسم قاعدة البيانات
-define('DB_USER', 'u000000000_crm');   // اسم المستخدم
+define('DB_NAME', 'crossroad_crm');   // اسم قاعدة البيانات
+define('DB_USER', 'crmuser');   // اسم المستخدم
 define('DB_PASS', 'ضع-كلمة-المرور-هنا'); // كلمة المرور
 
 define('APP_NAME', 'CrossRoad CRM');
