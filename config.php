@@ -7,7 +7,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'crossroad_crm');   // اسم قاعدة البيانات
 define('DB_USER', 'crmuser');   // اسم المستخدم
-define('DB_PASS', 'ضع-كلمة-المرور-هنا'); // كلمة المرور
+define('DB_PASS', 'StrongPassword123!'); // كلمة المرور
 
 define('APP_NAME', 'CrossRoad CRM');
 define('SESSION_TIMEOUT_MIN', 480);   // مدة الجلسة بالدقائق (8 ساعات)
