@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Africa/Cairo');
 /* ══════════════════════════════════════════════
    CrossRoad CRM — إعدادات قاعدة البيانات
    عدّل القيم دي ببيانات MySQL من لوحة Hostinger:
