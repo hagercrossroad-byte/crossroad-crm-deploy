@@ -13,6 +13,7 @@ function db(): PDO {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
       ]);
+      $pdo->exec("SET time_zone = '+03:00'");
     } catch (PDOException $e) {
       http_response_code(500);
       header('Content-Type: application/json; charset=utf-8');
