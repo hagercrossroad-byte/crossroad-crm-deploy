@@ -79,6 +79,10 @@ if($action==='ping') out(['pong'=>1]);
 
 if($action==='login'){
   $i = inp();
+  file_put_contents(
+    __DIR__.'/debug.txt',
+    print_r($i, true)
+);
   $un = trim($i['username']??''); $pw = $i['password']??'';
   $device_uid = substr(preg_replace('/[^a-zA-Z0-9_-]/','', $i['device_uid']??''),0,70);
   $uAgent = ua(); [$os,$br] = parse_ua($uAgent);
