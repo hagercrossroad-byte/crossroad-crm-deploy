@@ -546,12 +546,14 @@ if($action==='att.edit'){
     log_it('تعديل سجل حضور',$old['un'].' — '.$old['day'],$id, $old['status'].' '.$old['in_time'], ($i['status']??'').' '.($i['in_time']??''));
   } else {
 // سجل يدوي (غياب/إجازة/من المنزل)
-    $status = $i['status'] ?? 'present';
+$status = $i['status'] ?? 'absent';
 
-    // لو Present أو Late ومافيش وقت حضور، استخدم الوقت الحالي
-    $in_time = $i['in_time'] ?? null;
-    if (($status === 'present' || $status === 'late') && empty($in_time)) {
-        $in_time = date('Y-m-d H:i:s');
+$in_time = null;
+
+// لو الحالة حضور أو تأخير، سجل الوقت الحالي تلقائياً
+if (in_array($status, ['present', 'late'])) {
+    $in_time = date('Y-m-d H:i:s');
+}n_time = date('Y-m-d H:i:s');
     }
     db()->prepare("
     INSERT INTO attendance
