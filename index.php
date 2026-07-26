@@ -456,59 +456,13 @@ function attEdit(id){
 }
 function attManual(){
   openModal(mHead('➕ سجل حضور يدوي')+`
-    <label class="form-lbl">الموظف</label>
-    <select id="am-u">
-      ${USERS_OPT.map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join('')}
-    </select>
-
-    <label class="form-lbl">اليوم</label>
-    <input type="date" id="am-d" value="${new Date().toISOString().slice(0,10)}">
-
-    <div class="grid2">
-      <div>
-        <label class="form-lbl">وقت الحضور</label>
-        <input type="time" id="am-in">
-      </div>
-
-      <div>
-        <label class="form-lbl">وقت الانصراف</label>
-        <input type="time" id="am-out">
-      </div>
-    </div>
-
-    <label class="form-lbl">الحالة</label>
-    <select id="am-st">
-      ${attStOpts('absent')}
-    </select>
-
-    <label class="form-lbl">السبب (إجباري)</label>
-    <input id="am-r">
-
-    <button class="btn btn-p btn-full"
-      onclick="tryApi('att.edit',{
-        user_id:$('am-u').value,
-        day:$('am-d').value,
-
-        in_time:$('am-in').value
-          ? $('am-d').value+' '+$('am-in').value+':00'
-          : '',
-
-        out_time:$('am-out').value
-          ? $('am-d').value+' '+$('am-out').value+':00'
-          : '',
-
-        status:$('am-st').value,
-        reason:$('am-r').value
-      },this).then(()=>{
-        toast('✓ تم');
-        closeModal();
-        loadAttReport();
-      })">
-
-      حفظ
-    </button>
-  `);
+    <label class="form-lbl">الموظف</label><select id="am-u">${USERS_OPT.map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join('')}</select>
+    <label class="form-lbl">اليوم</label><input type="date" id="am-d" value="${new Date().toISOString().slice(0,10)}">
+    <label class="form-lbl">الحالة</label><select id="am-st">${attStOpts('absent')}</select>
+    <label class="form-lbl">السبب (إجباري)</label><input id="am-r">
+    <button class="btn btn-p btn-full" onclick="tryApi('att.edit',{user_id:$('am-u').value,day:$('am-d').value,status:$('am-st').value,reason:$('am-r').value},this).then(()=>{toast('✓ تم');closeModal();loadAttReport()})">حفظ</button>`);
 }
+
 
 /* ══ LEAVES ══ */
 const LV_ST={pending:['قيد الانتظار','#d97706'],approved:['تمت الموافقة','#16a34a'],rejected:['مرفوض','#dc2626'],cancelled:['ملغي','#64748b']};
