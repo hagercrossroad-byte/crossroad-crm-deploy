@@ -545,6 +545,7 @@ if($action==='att.edit'){
       ->execute([$i['in_time']?:null,$i['out_time']?:null,$i['status']?:'present',$ME['id'],$reason,$id]);
     log_it('تعديل سجل حضور',$old['un'].' — '.$old['day'],$id, $old['status'].' '.$old['in_time'], ($i['status']??'').' '.($i['in_time']??''));
   } else {
+
 // سجل يدوي (غياب/إجازة/من المنزل)
 $status = $i['status'] ?? 'absent';
 
@@ -553,9 +554,9 @@ $in_time = null;
 // لو الحالة حضور أو تأخير، سجل الوقت الحالي تلقائياً
 if (in_array($status, ['present', 'late'])) {
     $in_time = date('Y-m-d H:i:s');
-}n_time = date('Y-m-d H:i:s');
-    }
-    db()->prepare("
+}
+
+db()->prepare("
     INSERT INTO attendance
     (user_id, day, in_time, out_time, status, edited_by, edit_reason)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -568,9 +569,9 @@ if (in_array($status, ['present', 'late'])) {
 ")->execute([
     (int)$i['user_id'],
     $i['day'] ?: date('Y-m-d'),
-    $i['in_time'] ?: null,
+    $in_time,
     $i['out_time'] ?: null,
-    $i['status'] ?: 'absent',
+    $status,
     $ME['id'],
     $reason
 ]);
@@ -579,7 +580,8 @@ log_it(
     'إضافة سجل حضور يدوي',
     'user#'.$i['user_id'].' — '.($i['day'] ?? '')
 );
-  }
+
+}
   out();
 }
 
