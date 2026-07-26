@@ -545,8 +545,15 @@ if($action==='att.edit'){
       ->execute([$i['in_time']?:null,$i['out_time']?:null,$i['status']?:'present',$ME['id'],$reason,$id]);
     log_it('تعديل سجل حضور',$old['un'].' — '.$old['day'],$id, $old['status'].' '.$old['in_time'], ($i['status']??'').' '.($i['in_time']??''));
   } else {
-    // إضافة سجل يدوي (غياب/إجازة/من المنزل)
-db()->prepare("
+// سجل يدوي (غياب/إجازة/من المنزل)
+    $status = $i['status'] ?? 'present';
+
+    // لو Present أو Late ومافيش وقت حضور، استخدم الوقت الحالي
+    $in_time = $i['in_time'] ?? null;
+    if (($status === 'present' || $status === 'late') && empty($in_time)) {
+        $in_time = date('Y-m-d H:i:s');
+    }
+    db()->prepare("
     INSERT INTO attendance
     (user_id, day, in_time, out_time, status, edited_by, edit_reason)
     VALUES (?, ?, ?, ?, ?, ?, ?)
