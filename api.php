@@ -546,14 +546,30 @@ if($action==='att.edit'){
     log_it('تعديل سجل حضور',$old['un'].' — '.$old['day'],$id, $old['status'].' '.$old['in_time'], ($i['status']??'').' '.($i['in_time']??''));
   } else {
     // إضافة سجل يدوي (غياب/إجازة/من المنزل)
-    db()->prepare("INSERT INTO attendance(user_id,day,in_time,out_time,status,edited_by,edit_reason) VALUES(?,?,?,?,?,?,?)
-ON DUPLICATE KEY UPDATE
-in_time = VALUES(in_time),
-out_time = VALUES(out_time),
-status = VALUES(status),
-edited_by = VALUES(edited_by),
-edit_reason = VALUES(edit_reason)      ->execute([(int)$i['user_id'],$i['day']?:date('Y-m-d'),$i['in_time']?:null,$i['out_time']?:null,$i['status']?:'absent',$ME['id'],$reason]);
-    log_it('إضافة سجل حضور يدوي','user#'.$i['user_id'].' — '.($i['day']??''));
+db()->prepare("
+    INSERT INTO attendance
+    (user_id, day, in_time, out_time, status, edited_by, edit_reason)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+        in_time = VALUES(in_time),
+        out_time = VALUES(out_time),
+        status = VALUES(status),
+        edited_by = VALUES(edited_by),
+        edit_reason = VALUES(edit_reason)
+")->execute([
+    (int)$i['user_id'],
+    $i['day'] ?: date('Y-m-d'),
+    $i['in_time'] ?: null,
+    $i['out_time'] ?: null,
+    $i['status'] ?: 'absent',
+    $ME['id'],
+    $reason
+]);
+
+log_it(
+    'إضافة سجل حضور يدوي',
+    'user#'.$i['user_id'].' — '.($i['day'] ?? '')
+);
   }
   out();
 }
