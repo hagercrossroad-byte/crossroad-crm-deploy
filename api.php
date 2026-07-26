@@ -937,7 +937,14 @@ if($action==='trash.restore' || $action==='trash.purge'){
     log_it('استرجاع من السلة',$type.'#'.$id,$id);
   } else {
     if($ME['role_name']!=='super_admin') fail('الحذف النهائي متاح للـ Super Admin فقط',403);
-    db()->prepare("DELETE FROM $tb WHERE id=? AND deleted_at IS NOT NULL")->execute([$id]);
+    
+    // حذف سجلات الحضور أولاً
+db()->prepare("DELETE FROM attendance WHERE user_id=?")
+    ->execute([$id]);
+
+// ثم حذف المستخدم
+db()->prepare("DELETE FROM users WHERE id=?")
+    ->execute([$id]);
     log_it('حذف نهائي',$type.'#'.$id,$id);
   }
   out();
